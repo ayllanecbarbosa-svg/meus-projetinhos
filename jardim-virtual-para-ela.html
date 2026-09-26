@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Um jardim pra você</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #241536;
+    --bg-deep-2: #2f1c46;
+    --bloom-pink: #f2a6c5;
+    --bloom-pink-dark: #d9789f;
+    --lavender: #b9a3d9;
+    --gold: #f4d35e;
+    --leaf: #6f9c58;
+    --leaf-dark: #4f7440;
+    --cream: #fbf3ea;
+    --card-bg: rgba(255,255,255,0.06);
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg-deep: #3a2350;
+      --bg-deep-2: #46296324;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: radial-gradient(ellipse at 50% 0%, var(--bg-deep-2), var(--bg-deep));
+    background-color: var(--bg-deep);
+    color: var(--cream);
+    font-family: 'Quicksand', sans-serif;
+    overflow-x: hidden;
+  }
+  .sky {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .firefly {
+    position: absolute;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 6px 2px var(--gold);
+    opacity: 0;
+    animation: drift 8s ease-in-out infinite;
+  }
+  @keyframes drift {
+    0% { opacity: 0; transform: translateY(0) translateX(0); }
+    20% { opacity: .9; }
+    50% { transform: translateY(-40px) translateX(15px); }
+    80% { opacity: .6; }
+    100% { opacity: 0; transform: translateY(-90px) translateX(-10px); }
+  }
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 48px 24px calc(40px + env(safe-area-inset-bottom, 0px));
+    text-align: center;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 7vw, 2.9rem);
+    line-height: 1.2;
+    margin: 0 0 10px;
+    color: var(--cream);
+  }
+  .subtitle {
+    font-size: 1rem;
+    color: var(--lavender);
+    margin: 0 0 36px;
+    max-width: 46ch;
+    margin-inline: auto;
+  }
+  .garden {
+    position: relative;
+    height: 220px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    border-bottom: 2px solid var(--leaf-dark);
+    padding-bottom: 4px;
+  }
+  .ground-glow {
+    position: absolute;
+    bottom: -2px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--leaf), transparent);
+    filter: blur(2px);
+  }
+  .flower {
+    width: 46px;
+    transform-origin: bottom center;
+    animation: grow 900ms cubic-bezier(.34,1.56,.64,1) both, sway 4.5s ease-in-out infinite;
+  }
+  .flower svg { width: 100%; display: block; overflow: visible; }
+  @keyframes grow {
+    from { transform: scaleY(0) scaleX(.7); opacity: 0; }
+    to { transform: scaleY(1) scaleX(1); opacity: 1; }
+  }
+  @keyframes sway {
+    0%, 100% { rotate: -3deg; }
+    50% { rotate: 3deg; }
+  }
+  .plant-btn {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--bg-deep);
+    background: var(--bloom-pink);
+    border: none;
+    padding: 14px 30px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px -8px rgba(242,166,197,0.6);
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  }
+  .plant-btn:hover { transform: translateY(-2px); background: var(--bloom-pink-dark); color: var(--cream); }
+  .plant-btn:active { transform: translateY(0); }
+  .plant-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .plant-btn:disabled { opacity: .45; cursor: default; transform: none; box-shadow: none; }
+  .count {
+    margin-top: 14px;
+    font-size: .9rem;
+    color: var(--lavender);
+    min-height: 1.2em;
+  }
+  .message-card {
+    margin-top: 44px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 18px;
+    padding: 28px 26px;
+    text-align: left;
+  }
+  .message-card p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--cream);
+  }
+  .quote-author {
+    display: block;
+    margin-top: 10px;
+    font-family: 'Quicksand', sans-serif;
+    font-style: normal;
+    font-size: .85rem;
+    color: var(--lavender);
+    opacity: .85;
+  }
+  .signature {
+    display: block;
+    margin-top: 18px;
+    font-family: 'Quicksand', sans-serif;
+    font-style: normal;
+    font-size: .9rem;
+    color: var(--lavender);
+    text-align: right;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flower, .firefly { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sky" id="sky"></div>
+
+<main>
+  <h1>Um jardim, só pra você</h1>
+  <p class="subtitle">Toda vez que você aperta o botão, nasce uma flor nova. Plante quantas quiser.</p>
+
+  <div class="garden" id="garden">
+    <div class="ground-glow"></div>
+  </div>
+
+  <button class="plant-btn" id="plantBtn">🌱 Plantar uma flor</button>
+  <div class="count" id="count"></div>
+
+  <div class="message-card">
+    <p id="message">Você me enfeitiçou, de corpo e alma.</p>
+    <span class="quote-author" id="quoteAuthor">Jane Austen, Orgulho e Preconceito</span>
+    <span class="signature">— Ayllane</span>
+  </div>
+</main>
+
+<script>
+(function () {
+  const sky = document.getElementById('sky');
+  for (let i = 0; i < 18; i++) {
+    const f = document.createElement('div');
+    f.className = 'firefly';
+    f.style.left = Math.random() * 100 + '%';
+    f.style.top = (30 + Math.random() * 60) + '%';
+    f.style.animationDelay = (Math.random() * 8) + 's';
+    f.style.animationDuration = (6 + Math.random() * 6) + 's';
+    sky.appendChild(f);
+  }
+
+  const palettes = [
+    ['#f2a6c5', '#d9789f'],
+    ['#f4d35e', '#e0b32e'],
+    ['#b9a3d9', '#8f74bd'],
+    ['#f2c6a6', '#d99b6b'],
+    ['#a6d3f2', '#6ba7d9']
+  ];
+
+  function flowerSVG(petal, petalDark) {
+    return `
+      <svg viewBox="0 0 46 150" xmlns="http://www.w3.org/2000/svg">
+        <path d="M23 150 C 23 100, 15 90, 23 60" stroke="#6f9c58" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M23 110 C 30 105, 36 108, 38 100" stroke="#6f9c58" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M23 90 C 16 86, 10 88, 8 80" stroke="#6f9c58" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <g transform="translate(23,55)">
+          <ellipse cx="0" cy="-14" rx="9" ry="15" fill="${petal}"/>
+          <ellipse cx="0" cy="14" rx="9" ry="15" fill="${petal}"/>
+          <ellipse cx="-14" cy="0" rx="15" ry="9" fill="${petal}"/>
+          <ellipse cx="14" cy="0" rx="15" ry="9" fill="${petal}"/>
+          <ellipse cx="-10" cy="-10" rx="10" ry="7" fill="${petalDark}" transform="rotate(45 -10 -10)"/>
+          <ellipse cx="10" cy="-10" rx="10" ry="7" fill="${petalDark}" transform="rotate(-45 10 -10)"/>
+          <ellipse cx="-10" cy="10" rx="10" ry="7" fill="${petalDark}" transform="rotate(-45 -10 10)"/>
+          <ellipse cx="10" cy="10" rx="10" ry="7" fill="${petalDark}" transform="rotate(45 10 10)"/>
+          <circle cx="0" cy="0" r="8" fill="#f4d35e"/>
+        </g>
+      </svg>`;
+  }
+
+  const garden = document.getElementById('garden');
+  const btn = document.getElementById('plantBtn');
+  const countEl = document.getElementById('count');
+  const MAX = 9;
+  let planted = 0;
+
+  const messages = [
+    { quote: "Você me enfeitiçou, de corpo e alma.", author: "Jane Austen, Orgulho e Preconceito" },
+    { quote: "Queria que você estivesse aqui, ou que eu estivesse aí, ou a gente junto em qualquer lugar.", author: "" },
+    { quote: "Nossas almas são feitas da mesma matéria, a dele e a minha.", author: "Emily Brontë, O Morro dos Ventos Uivantes" },
+    { quote: "Você está longe dos meus olhos, mas dentro do meu pensamento o dia todo.", author: "" },
+    { quote: "Você se torna eternamente responsável por aquilo que cativa.", author: "Antoine de Saint-Exupéry, O Pequeno Príncipe" },
+    { quote: "Não vejo a hora de transformar essa saudade em um abraço bem apertado.", author: "" },
+    { quote: "Assim, o leão se apaixonou pela ovelha.", author: "Stephenie Meyer, Crepúsculo" },
+    { quote: "O meu lugar favorito no mundo ainda é o seu abraço, mesmo de longe.", author: "" },
+    { quote: "Sempre resta algo a amar.", author: "Gabriel García Márquez, Cem Anos de Solidão" }
+  ];
+  const messageEl = document.getElementById('message');
+  const authorEl = document.getElementById('quoteAuthor');
+
+  btn.addEventListener('click', () => {
+    if (planted >= MAX) return;
+    const [petal, petalDark] = palettes[planted % palettes.length];
+    const div = document.createElement('div');
+    div.className = 'flower';
+    div.style.animationDelay = '0s, ' + (Math.random() * 2) + 's';
+    div.innerHTML = flowerSVG(petal, petalDark);
+    garden.appendChild(div);
+    planted++;
+    countEl.textContent = planted === 1 ? '1 flor plantada 🌸' : planted + ' flores plantadas 🌸';
+    const m = messages[Math.min(planted - 1, messages.length - 1)];
+    messageEl.textContent = m.quote;
+    authorEl.textContent = m.author || '';
+    authorEl.style.display = m.author ? '' : 'none';
+    if (planted >= MAX) {
+      btn.disabled = true;
+      btn.textContent = '🌼 Jardim completo';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
